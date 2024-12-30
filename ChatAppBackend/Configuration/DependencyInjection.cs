@@ -1,12 +1,37 @@
 ﻿using Business.Context;
+using Business.IServices;
+using Business.Services;
+using DataAccess.IRepositories;
+using DataAccess.Mapping;
+using DataAccess.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Writers;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace ChatAppBackend.Configuration
 {
     public static class DependencyInjection
     {
+
+        public static IServiceCollection AddRepositoriesInjections(this IServiceCollection services)
+        {
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            return services;
+        }
+        public static IServiceCollection AddServicesInjections(this IServiceCollection services)
+        {
+            services.AddScoped(typeof(IServicesDependency<>), typeof(ServicesDependency<>));
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
+            return services;
+        }
         public static IServiceCollection AddSwagger(this IServiceCollection Services)
         {
             Services.AddControllers();
@@ -40,18 +65,62 @@ namespace ChatAppBackend.Configuration
             });
             return Services;
         }
-
-
-        public static IServiceCollection AddDatabaseAndDatabaseHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ChatDpContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
-
-            services.AddHealthChecks().AddSqlServer(configuration.GetConnectionString("DefaultConnection")).AddDbContextCheck<ChatDpContext>();
-
+            return services;
+        }
+        public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                };
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    policyBuilder => policyBuilder.WithOrigins("http://127.0.0.1:5500")
+                                                  .AllowAnyHeader()
+                                                  .AllowAnyMethod()
+                                                  .AllowCredentials());
+            });
+            return services;
+        }
+        public static IServiceCollection AddJson(this IServiceCollection services)
+        {
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+            return services;
+        }
+        public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHealthChecks()
+             .AddSqlServer(configuration.GetConnectionString("DefaultConnection"))
+             .AddDbContextCheck<ChatDpContext>();
             return services;
         }
 
+        public static IServiceCollection AddMappingProfile(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            return services;
+        }
     }
 }

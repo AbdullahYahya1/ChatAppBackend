@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,21 +15,21 @@ namespace Business.Entities
 
         [Required]
         [MaxLength(50)]
-        public string Username { get; set; }
+        public string? Username { get; set; }
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
-        [MaxLength(255)]
-        public string Password { get; set; }
-
+        public string? Password { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
+        public string? RefreshToken { get; set; }
+        public UserType UserType { get; set; }
         public DateTime? LastTimeConnected { get; set; }
 
         public bool OnlineStatus { get; set; }
 
-        // Navigation properties
         public virtual ICollection<ConversationUser> ConversationUsers { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
     }

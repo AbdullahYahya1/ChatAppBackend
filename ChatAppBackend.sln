@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatAppBackend", "ChatAppBackend\ChatAppBackend.csproj", "{739AEE03-ADE9-48E0-BE19-951DD70491D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZChatAppBackend", "ChatAppBackend\ZChatAppBackend.csproj", "{739AEE03-ADE9-48E0-BE19-951DD70491D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{576C429E-2D1E-486E-8CAD-DCC53A4BD863}"
 EndProject

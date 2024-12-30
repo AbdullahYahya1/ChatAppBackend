@@ -21,8 +21,11 @@
     <Folder Include="Dtos\ConversationUserDtos\" />
     <Folder Include="Dtos\MediaDtos\" />
     <Folder Include="Dtos\MessageDtos\" />
-    <Folder Include="Dtos\UserDtos\" />
     <Folder Include="Dtos\NotificationDtos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
 </Project>
