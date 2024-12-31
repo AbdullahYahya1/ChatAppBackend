@@ -99,7 +99,7 @@ namespace Business.Services
                     </div>
                 </body>
             </html>";
-            await _emailSender.SendEmailAsync(emailDto.Email, subject, emailBody);
+            //await _emailSender.SendEmailAsync(emailDto.Email, subject, emailBody);
             return new ResponseModel<EmailCodeDto>
             {
                 Message = "Verification code sent to email.",

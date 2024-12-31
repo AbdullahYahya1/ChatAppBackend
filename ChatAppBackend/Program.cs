@@ -33,8 +33,8 @@ app.UseHttpsRedirection();
 //        recurringJobManager.AddOrUpdate("healthCheck-job", () => backgroundJobService.HealthCheck(), Cron.HourInterval(1));
 //    }
 //});
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.UseCors("AllowSpecificOrigin");
 app.MapControllers();
 app.UseStaticFiles();

@@ -7,7 +7,6 @@ using DataAccess.Mapping;
 using DataAccess.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -24,7 +23,11 @@ namespace ChatAppBackend.Configuration
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            services.AddScoped<IMediaRepository, MediaRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IConversationUserRepository, ConversationUserRepository>();
+            services.AddScoped<IConversationRepository, ConversationRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
             return services;
         }
         public static IServiceCollection AddServicesInjections(this IServiceCollection services)
@@ -92,7 +95,7 @@ namespace ChatAppBackend.Configuration
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = configuration["Jwt:Issuer"],
                     ValidAudience = configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
                 };
             });
             services.AddCors(options =>

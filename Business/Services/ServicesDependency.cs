@@ -39,9 +39,8 @@ namespace Business.Services
         }
         public string GetUserId()
         {
-            return HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return HttpContextAccessor?.HttpContext?.User?.FindFirst("UserID")?.Value;
         }
-
         public string GetUserType()
         {
             return HttpContextAccessor?.HttpContext?.User?.FindFirst("UserType")?.Value;
@@ -51,5 +50,4 @@ namespace Business.Services
             return HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
         }
     }
-
 }

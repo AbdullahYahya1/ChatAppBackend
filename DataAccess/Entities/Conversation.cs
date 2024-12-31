@@ -18,9 +18,9 @@ namespace Business.Entities
         public string Type { get; set; } // "group" or "chat"
 
         public DateTime CreatedAt { get; set; }
+        public DateTime LastUpdate { get; set; }
 
         public int? LastMessageID { get; set; }
-
         // Navigation properties
         [ForeignKey("LastMessageID")]
         public virtual Message LastMessage { get; set; }

@@ -1,4 +1,5 @@
-﻿using Business.IServices;
+﻿using Business.Entities;
+using Business.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,17 +8,20 @@ namespace ChatAppBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
-        public UserController(IUserService userService) {
-        _userService = userService;
+        private readonly IServicesDependency<User> _servicesDependency;
+        public UserController(IServicesDependency<User> servicesDependency) {
+            _servicesDependency = servicesDependency;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetCurrentUser()
         {
-
+            Console.WriteLine("GetUserId: "+ _servicesDependency.GetUserId());
+            Console.WriteLine("GetUserId: "+ _servicesDependency.GetUserId());
+            Console.WriteLine("GetUserId: " + _servicesDependency.GetUserId());
+            Console.WriteLine("GetUserId: " + _servicesDependency.GetUserId());
             return Ok("here we are"); 
         }
     }

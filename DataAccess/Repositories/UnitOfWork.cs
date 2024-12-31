@@ -13,12 +13,28 @@ namespace DataAccess.Repositories
     {
         private readonly ChatDpContext _db;
         public IUserRepository Users { get; }
+        public INotificationRepository Notifications { get; }
+        public IConversationUserRepository ConversationUsers { get; }
+        public IConversationRepository Conversations { get; }
+        public IMessageRepository Messages { get; }
+        public IMediaRepository Media { get; }
         public UnitOfWork(
             ChatDpContext context,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            INotificationRepository notificationRepository,
+            IConversationRepository conversationRepository,
+            IConversationUserRepository conversationUserRepository,
+            IMessageRepository messageRepository,
+            IMediaRepository mediaRepository
+            )
         {
             _db = context;
             Users = userRepository;
+            Notifications = notificationRepository;
+            ConversationUsers = conversationUserRepository;
+            Messages = messageRepository;
+            Media = mediaRepository;
+            Conversations = conversationRepository;
         }
 
 

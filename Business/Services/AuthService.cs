@@ -1,7 +1,7 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
 using Business.Entities;
@@ -26,18 +26,20 @@ namespace Business.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new Claim("UserID", user.UserID.ToString()),
                 new Claim("UserType", user.UserType.ToString()),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(30),
                 signingCredentials: creds
             );
+            Console.WriteLine($"DEBUG => token.Issuer = {token.Issuer}");
+            Console.WriteLine($"DEBUG => token.Audiences = {string.Join(",", token.Audiences)}");
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
