@@ -19,15 +19,12 @@ namespace Business.Entities
 
         [Required]
         [EmailAddress]
-        public string? Email { get; set; }
-
-        [Required]
-        public string? Password { get; set; }
+        public string Email { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
         public string? RefreshToken { get; set; }
         public UserType UserType { get; set; }
         public DateTime? LastTimeConnected { get; set; }
-
+        public DateTime? CreateDate { get; set; }
         public bool OnlineStatus { get; set; }
 
         public virtual ICollection<ConversationUser> ConversationUsers { get; set; }

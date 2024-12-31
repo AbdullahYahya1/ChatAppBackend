@@ -12,10 +12,8 @@ namespace Business.IServices
     public interface IUserService
     {
         Task<ResponseModel<TokenResponse>> RefreshToken(TokenRequest tokenRequest);
-        Task<ResponseModel<AuthenticationResponse>> Authenticate(string email);
-        Task<ResponseModel<bool>> CreateUser(PostUserDto userDto);
-        Task<ResponseModel<AuthenticationResponse>> CustomerAuthenticate(string phone);
-        Task<ResponseModel<bool>> UpdateUser(PutUserDto user);
+        Task<ResponseModel<AuthenticationResponse>> Authenticate(string email, string code);
 
+        Task<ResponseModel<EmailCodeDto>> requestEmailCode(EmailDto emailDto);
     }
 }

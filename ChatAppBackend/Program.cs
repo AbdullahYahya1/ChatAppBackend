@@ -1,5 +1,7 @@
+using Business.EmailSender;
 using ChatAppBackend.Configuration;
 using Hangfire;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,7 @@ builder.Services
     .AddAuthenticationAndAuthorization(builder.Configuration)
     .AddJson()
     .AddHealthChecks();
+builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();

@@ -1,10 +1,12 @@
 ﻿using Business.Context;
+using Business.EmailSender;
 using Business.IServices;
 using Business.Services;
 using DataAccess.IRepositories;
 using DataAccess.Mapping;
 using DataAccess.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +32,8 @@ namespace ChatAppBackend.Configuration
             services.AddScoped(typeof(IServicesDependency<>), typeof(ServicesDependency<>));
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
             return services;
         }
         public static IServiceCollection AddSwagger(this IServiceCollection Services)

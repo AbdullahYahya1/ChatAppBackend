@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Dtos.General
 {
-    public class AuthenticationResponse
+    public class GetUserDto
     {
-        public TokenResponse Tokens { get; set; }
-        public GetUserDto User { get; set; }
+        public string? Email { get; set; }
     }
 }

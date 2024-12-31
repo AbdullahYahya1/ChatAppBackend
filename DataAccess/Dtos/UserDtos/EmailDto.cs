@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Dtos.UserDtos
 {
-    public class GetUserDto
+    public class EmailDto
     {
+        public string Email {  get; set; }
     }
 }

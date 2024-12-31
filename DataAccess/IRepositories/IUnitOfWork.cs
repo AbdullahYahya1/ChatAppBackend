@@ -12,5 +12,6 @@ namespace DataAccess.IRepositories
         IUserRepository Users { get; }
         Task<int> SaveChangesAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();
+
     }
 }
