@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Entities;
 using Business.IServices;
 using DataAccess.IRepositories;
 using DataAccess.Repositories;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,8 +27,8 @@ namespace Business.Services
             IUnitOfWork unitOfWork,
             IConfiguration configuration,
             IMapper mapper,
-            IHttpContextAccessor httpContextAccessor,
-            ILogger<T> logger
+            IHttpContextAccessor httpContextAccessor
+            //ILogger<T> logger
         )
         {
             UnitOfWork = unitOfWork;
@@ -37,11 +39,16 @@ namespace Business.Services
         }
         public string GetUserId()
         {
-            return HttpContextAccessor.HttpContext?.User?.FindFirst("UserId")?.Value;
+            return HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
-        public string GetUserRole()
+
+        public string GetUserType()
         {
             return HttpContextAccessor?.HttpContext?.User?.FindFirst("UserType")?.Value;
+        }
+        public string GetUserEmail()
+        {
+            return HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
         }
     }
 

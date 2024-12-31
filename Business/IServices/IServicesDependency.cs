@@ -19,6 +19,7 @@ namespace Business.IServices
         IHttpContextAccessor HttpContextAccessor { get; }
         //ILogger<T> Logger { get; }
         string GetUserId();
-        string GetUserRole();
+        string GetUserType();
+        string GetUserEmail();
     }
 }

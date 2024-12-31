@@ -13,7 +13,6 @@ namespace Business.IServices
     {
         Task<ResponseModel<TokenResponse>> RefreshToken(TokenRequest tokenRequest);
         Task<ResponseModel<AuthenticationResponse>> Authenticate(string email, string code);
-
         Task<ResponseModel<EmailCodeDto>> requestEmailCode(EmailDto emailDto);
     }
 }
