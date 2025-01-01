@@ -16,7 +16,6 @@ builder.Services
     .AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
 
-
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {

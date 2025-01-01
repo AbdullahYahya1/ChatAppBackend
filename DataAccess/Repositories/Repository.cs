@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DataAccess.IRepositories;
 using Business.Context;
+using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
 {
@@ -41,6 +42,11 @@ namespace DataAccess.Repositories
         {
             _dbSet.Update(entity);
         }
+        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.SingleOrDefaultAsync(predicate);
+        }
+
     }
 }
 

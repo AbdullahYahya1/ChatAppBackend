@@ -36,6 +36,8 @@ namespace ChatAppBackend.Configuration
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IConversationServices, ConversationServices>();
+            services.AddTransient<IMessageService, MessageService>();
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
             return services;
         }

@@ -22,7 +22,7 @@ namespace Business.Entities
         public DateTime JoinedAt { get; set; }
 
         [ForeignKey("ConversationID")]
-        public virtual Conversation Conversation { get; set; }
+        public virtual Conversation Conversation { get; set; } 
 
         [ForeignKey("UserID")]
         public virtual User User { get; set; }

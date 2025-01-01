@@ -37,10 +37,17 @@ namespace Business.Services
             HttpContextAccessor = httpContextAccessor;
             //Logger = logger;
         }
-        public string GetUserId()
+        public int GetUserId()
         {
-            return HttpContextAccessor?.HttpContext?.User?.FindFirst("UserID")?.Value;
+            if (HttpContextAccessor?.HttpContext?.User?.FindFirst("UserID")?.Value is string userIdValue
+                && int.TryParse(userIdValue, out int userId))
+            {
+                return userId;
+            }
+
+            return -1; // Return null if parsing fails
         }
+
         public string GetUserType()
         {
             return HttpContextAccessor?.HttpContext?.User?.FindFirst("UserType")?.Value;

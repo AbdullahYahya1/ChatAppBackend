@@ -18,7 +18,7 @@ namespace Business.IServices
         IMapper Mapper { get; }
         IHttpContextAccessor HttpContextAccessor { get; }
         //ILogger<T> Logger { get; }
-        string GetUserId();
+        public int GetUserId();
         string GetUserType();
         string GetUserEmail();
     }

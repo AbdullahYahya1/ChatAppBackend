@@ -10,7 +10,7 @@ namespace Common
         Admin = 1,
 
     }
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
     public class CustomAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
 

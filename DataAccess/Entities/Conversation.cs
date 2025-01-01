@@ -8,22 +8,27 @@ using System.Threading.Tasks;
 
 namespace Business.Entities
 {
+    public enum ConversationType
+    {
+        chat = 0,
+        group = 1
+    }
+
+
     public class Conversation
     {
         [Key]
         public int ConversationID { get; set; }
 
         [Required]
-        [MaxLength(10)]
-        public string Type { get; set; } // "group" or "chat"
-
+        public ConversationType ConversationType { get; set; }
+        public string? ConversationName { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastUpdate { get; set; }
 
         public int? LastMessageID { get; set; }
-        // Navigation properties
         [ForeignKey("LastMessageID")]
-        public virtual Message LastMessage { get; set; }
+        public virtual Message? LastMessage { get; set; }
 
         public virtual ICollection<ConversationUser> ConversationUsers { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
