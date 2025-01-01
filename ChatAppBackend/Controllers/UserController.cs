@@ -18,9 +18,6 @@ namespace ChatAppBackend.Controllers
         [Authorize]
         public async Task<IActionResult> GetCurrentUser()
         {
-            Console.WriteLine("GetUserId: "+ _servicesDependency.GetUserId());
-            Console.WriteLine("GetUserId: "+ _servicesDependency.GetUserId());
-            Console.WriteLine("GetUserId: " + _servicesDependency.GetUserId());
             Console.WriteLine("GetUserId: " + _servicesDependency.GetUserId());
             return Ok("here we are"); 
         }
