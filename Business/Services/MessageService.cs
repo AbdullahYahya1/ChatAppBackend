@@ -46,6 +46,5 @@ namespace Business.Services
                 IsSuccess = true,
             }; 
         }
-
     }
 }
