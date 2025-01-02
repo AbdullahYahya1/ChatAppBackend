@@ -11,24 +11,24 @@ using System.Threading.Tasks;
 
 namespace Business.Services
 {
-    public class MessageService:IMessageService
+    public class MessageService : IMessageService
     {
         private readonly IServicesDependency<Message> _dep;
         public MessageService(IServicesDependency<Message> dep)
         {
             _dep = dep;
         }
-        public async Task<ResponseModel> PostMessage(PostMessageDto postMessageDto){
+        public async Task<ResponseModel> PostMessage(PostMessageDto postMessageDto) {
 
             var currentUserId = _dep.GetUserId();
             var conv = await _dep.UnitOfWork.Conversations.CheckUserAllowToSendToConversation(currentUserId, postMessageDto.ConversationID);
 
-            if (!conv) 
+            if (!conv)
             {
                 return new ResponseModel()
                 {
                     IsSuccess = false,
-                    Message = "NotAuthorized" 
+                    Message = "NotAuthorized"
                 };
             }
             var message = new Message()
@@ -44,7 +44,28 @@ namespace Business.Services
             return new ResponseModel()
             {
                 IsSuccess = true,
-            }; 
+            };
+        }
+        public async Task<ResponseModel<ICollection<GetMessageDto>>> GetMessages(int ConversationID)
+        {
+            var currentUserId = _dep.GetUserId();
+            var conv = await _dep.UnitOfWork.Conversations.CheckUserAllowToSendToConversation(currentUserId, ConversationID);
+            if (!conv)
+            {
+                return new ResponseModel<ICollection<GetMessageDto>>
+                {
+                    IsSuccess = false,
+                    Message = "NotAuthorized"
+                };
+            }
+            await _dep.UnitOfWork.Messages.UpdateMessagesReadStatus(ConversationID, currentUserId);
+
+            var messages =await _dep.UnitOfWork.Messages.GetMessaegsByConversationID(ConversationID , currentUserId);
+            return new ResponseModel<ICollection<GetMessageDto>>
+            {
+                IsSuccess = true,
+                Result = _dep.Mapper.Map<ICollection<GetMessageDto>>(messages)
+            };
         }
     }
 }

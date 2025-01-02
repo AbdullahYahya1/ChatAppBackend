@@ -9,5 +9,7 @@ namespace DataAccess.IRepositories
 {
     public interface IMessageRepository:IRepository<Message>
     {
+        Task<ICollection<Message>> GetMessaegsByConversationID(int conversationID, int currentUserId);
+        Task UpdateMessagesReadStatus(int conversationID, int currentUserId);
     }
 }

@@ -175,6 +175,7 @@ namespace Business.Services
                     },
                     User = new GetUserDto
                     {
+                        UserID= user.UserID,
                         Email = user.Email
                     }
                 }

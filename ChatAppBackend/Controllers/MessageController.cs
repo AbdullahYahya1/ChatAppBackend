@@ -8,6 +8,7 @@ namespace ZChatAppBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MessageController : ControllerBase
     {
         private readonly IMessageService _messageService;
@@ -15,20 +16,16 @@ namespace ZChatAppBackend.Controllers
             _messageService = messageService;
         }
 
-
         [HttpGet("{ConversationID}")]
-        [Authorize]
         public async Task<IActionResult> GetMessages(int ConversationID) {
-
-            return Ok("here we are");
+            var res = await _messageService.GetMessages(ConversationID);
+            return Ok(res);
         }
 
-
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> PostMessage(PostMessageDto postMessageDto)
         {
-            var res = _messageService.PostMessage(postMessageDto);
+            var res = await _messageService.PostMessage(postMessageDto);
             return Ok(res);
         }
     }

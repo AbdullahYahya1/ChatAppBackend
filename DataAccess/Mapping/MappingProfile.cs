@@ -19,7 +19,9 @@ namespace DataAccess.Mapping
            CreateMap<GetConversationDto,Conversation>().ReverseMap();
            CreateMap<GetConversationUserDto, ConversationUser>().ReverseMap();
            CreateMap<GetMessageDto, Message>().ReverseMap();
-           CreateMap<User, GetUserDto>().ReverseMap();
+           CreateMap<GetMessageDto, Message>().ReverseMap();
+
+            CreateMap<User, GetUserDto>().ReverseMap();
             //CreateMap<Area, LookUpDataModel<string>>()
             //.ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.AreaId))
             //.ForMember(dest => dest.NameAr, opt => opt.MapFrom(src => src.NameAr))
