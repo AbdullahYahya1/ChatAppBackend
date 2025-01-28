@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/ChatAppBackend/wwwroot/images/49682e5d-710f-4bed-93b8-31d7c7149f82.png
+/ChatAppBackend/wwwroot/images/5eab5180-248e-4573-a064-9e4c22031645.png
+/ChatAppBackend/wwwroot/images/760b09d5-baf8-4293-92ef-b1f5b091c10d.jfif
+/ChatAppBackend/wwwroot/images/84935e6f-8911-4bb5-8982-cea061307590.jfif
+*.jfif
+*.png
+*.jpg
+*.pdf
+*.mp4
+*.webm
