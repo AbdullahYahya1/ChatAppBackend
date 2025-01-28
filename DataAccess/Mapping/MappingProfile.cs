@@ -3,6 +3,7 @@ using Business.Entities;
 using DataAccess.Dtos.ConversationDtos;
 using DataAccess.Dtos.ConversationUserDtos;
 using DataAccess.Dtos.General;
+using DataAccess.Dtos.MediaDtos;
 using DataAccess.Dtos.MessageDtos;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace DataAccess.Mapping
            CreateMap<GetConversationDto,Conversation>().ReverseMap();
            CreateMap<GetConversationUserDto, ConversationUser>().ReverseMap();
            CreateMap<GetMessageDto, Message>().ReverseMap();
-           CreateMap<GetMessageDto, Message>().ReverseMap();
+           CreateMap<Media, GetMediaDto>().ReverseMap();
 
             CreateMap<User, GetUserDto>().ReverseMap();
             //CreateMap<Area, LookUpDataModel<string>>()

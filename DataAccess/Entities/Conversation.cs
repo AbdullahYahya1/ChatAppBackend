@@ -29,7 +29,7 @@ namespace Business.Entities
         public int? LastMessageID { get; set; }
         [ForeignKey("LastMessageID")]
         public virtual Message? LastMessage { get; set; }
-
+        public string LastUpdateRelative { get; set; }
         public virtual ICollection<ConversationUser> ConversationUsers { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
     }

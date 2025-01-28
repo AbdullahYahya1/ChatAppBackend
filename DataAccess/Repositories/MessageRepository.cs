@@ -18,11 +18,19 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<ICollection<Message>> GetMessaegsByConversationID(int conversationID, int currentUserId)
+
+        public async Task<ICollection<Message>> GetMessaegsByConversationID(int conversationID, int currentUserI, int? lastMessageId = null, int pageSize = 10)
         {
-            return await _context.Messages
+            var query = _context.Messages.Include(M=>M.Media)
                 .Where(m => m.ConversationID == conversationID)
-                .ToListAsync();
+                .OrderByDescending(m => m.MessageID) 
+                .AsNoTracking();
+            if (lastMessageId.HasValue)
+            {
+                query = query.Where(m => m.MessageID < lastMessageId.Value);
+            }
+            var messages = await query.Take(pageSize).ToListAsync();
+            return messages.OrderBy(m => m.MessageID).ToList();
         }
         public async Task UpdateMessagesReadStatus(int conversationID, int currentUserId)
         {

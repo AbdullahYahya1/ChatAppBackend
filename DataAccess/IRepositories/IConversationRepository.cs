@@ -11,7 +11,7 @@ namespace DataAccess.IRepositories
 {
     public interface IConversationRepository:IRepository<Conversation>
     {
-        Task<ICollection<ConversationDto>> GetAllConversationsByUserId(int userId, Pagination pagination);
+        Task<ICollection<ConversationDto>> GetAllConversationsByUserId(int userId, Pagination pagination, string? email);
         Task<bool> CheckUserAllowToSendToConversation(int userId,  int ConversationID);
 
     }

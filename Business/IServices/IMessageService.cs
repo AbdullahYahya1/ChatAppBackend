@@ -10,8 +10,8 @@ namespace Business.IServices
 {
     public interface IMessageService
     {
-        Task<ResponseModel> PostMessage(PostMessageDto postMessageDto);
-        Task<ResponseModel<ICollection<GetMessageDto>>> GetMessages(int ConversationID);
+        Task<ResponseModel<GetMessageDto>> PostMessage(PostMessageDto postMessageDto);
+        Task<ResponseModel<ICollection<GetMessageDto>>> GetMessages(int ConversationID,int? lastMessageId=null);
 
     }
 }

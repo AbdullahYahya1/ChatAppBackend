@@ -36,5 +36,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("AllowSpecificOrigin");
 app.MapControllers();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=1204800"); // Cache for 14 days
+    }
+}); 
 app.Run();

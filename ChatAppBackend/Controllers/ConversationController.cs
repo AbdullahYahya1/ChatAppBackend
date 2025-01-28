@@ -25,11 +25,12 @@ namespace ZChatAppBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Conversations([FromQuery] Pagination pagination)
+        public async Task<IActionResult> Conversations([FromQuery] Pagination pagination,[FromQuery] string? email)
         {
-            var res = await _conversationServices.GetCurrentConversations(pagination);
+            var res = await _conversationServices.GetCurrentConversations(pagination, email);
             return Ok(res); 
         }
+        
         
     }
 }

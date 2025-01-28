@@ -13,7 +13,8 @@ namespace DataAccess.Dtos.ConversationDtos
         public int ConversationID { get; set; }
         public DateTime LastUpdate { get; set; }
         public ConversationType ConversationType { get; set; }
-        public Message LastMessage { get; set; } 
+        public Message LastMessage { get; set; }
+        public string LastUpdateRelative { get; set; }
         public GetUserDto FirstUser { get; set; }
     }
 }

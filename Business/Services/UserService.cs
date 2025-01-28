@@ -5,6 +5,7 @@ using Business.Entities;
 using Business.IServices;
 using DataAccess.Dtos.General;
 using DataAccess.Dtos.UserDtos;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Business.Services
@@ -30,6 +31,10 @@ namespace Business.Services
             _dep = dep;
             _emailSender = emailSender;
             _authService = authService;
+        }
+
+        public async Task<ResponseModel<string>> UpdateImage(imgDto imgDto){
+            throw new NotImplementedException(); 
         }
 
         public async Task<ResponseModel<EmailCodeDto>> requestEmailCode(EmailDto emailDto)
@@ -203,6 +208,10 @@ namespace Business.Services
                 };
             }
             var user = await _dep.UnitOfWork.Users.GetUserByEmail(email);
+            Console.WriteLine();
+            Console.WriteLine(user.Email + " "+user.RefreshToken +" " + tokenRequest.RefreshToken);
+            Console.WriteLine();
+
             if (user == null ||
                 user.RefreshToken != tokenRequest.RefreshToken ||
                 user.RefreshTokenExpiryTime <= DateTime.UtcNow)
@@ -210,7 +219,7 @@ namespace Business.Services
                 return new ResponseModel<TokenResponse>
                 {
                     IsSuccess = false,
-                    Message = "Refresh token is invalid or has expired."
+                    Message = user.RefreshTokenExpiryTime <= DateTime.UtcNow? "Refresh token Expired" : "Refresh token is invalid" 
                 };
             }
             var newAccessToken = _authService.GenerateJwtToken(user);

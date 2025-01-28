@@ -1,4 +1,5 @@
 ﻿using Common;
+using DataAccess.Dtos.General;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,7 +27,7 @@ namespace Business.Entities
         public DateTime? LastTimeConnected { get; set; }
         public DateTime? CreateDate { get; set; }
         public bool OnlineStatus { get; set; }
-
+        public string? ProfileImg {  get; set; }
         public virtual ICollection<ConversationUser> ConversationUsers { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace DataAccess.Dtos.MessageDtos
     public class PostMessageDto
     {
         public int ConversationID { get; set; }
-        public string MessageText { get; set; }
+        public string? MessageText { get; set; }
+        public List<IFormFile>? Files { get; set; }
     }
 }

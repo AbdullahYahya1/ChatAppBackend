@@ -1,5 +1,6 @@
 ﻿using Business.Context;
 using Business.EmailSender;
+using Business.FileService;
 using Business.IServices;
 using Business.Services;
 using DataAccess.IRepositories;
@@ -35,9 +36,10 @@ namespace ChatAppBackend.Configuration
             services.AddScoped(typeof(IServicesDependency<>), typeof(ServicesDependency<>));
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IConversationServices, ConversationServices>();
-            services.AddTransient<IMessageService, MessageService>();
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IConversationServices, ConversationServices>();
+            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<FileService>();
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
             return services;
         }
@@ -103,7 +105,7 @@ namespace ChatAppBackend.Configuration
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin",
-                    policyBuilder => policyBuilder.WithOrigins("http://127.0.0.1:5500")
+                    policyBuilder => policyBuilder.WithOrigins("http://localhost:4200")
                                                   .AllowAnyHeader()
                                                   .AllowAnyMethod()
                                                   .AllowCredentials());

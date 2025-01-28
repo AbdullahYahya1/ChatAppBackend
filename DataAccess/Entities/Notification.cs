@@ -19,8 +19,6 @@ namespace Business.Entities
         [Required]
         public int MessageID { get; set; }
 
-        public int UnreadCount { get; set; }
-
         [ForeignKey("UserID")]
         public virtual User User { get; set; }
 

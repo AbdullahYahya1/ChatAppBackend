@@ -8,6 +8,16 @@ using System.Threading.Tasks;
 
 namespace Business.Entities
 {
+    public enum MediaType
+    {
+        Images = 0,        // Includes JPG, PNG, GIF, etc.
+        Documents = 1,     // Includes PDF, DOCX, XLSX, etc.
+        Videos = 2,        // Includes MP4, AVI, etc.
+        Audio = 3,         // Includes MP3, WAV, etc.
+        Archives = 4,      // Includes ZIP, RAR, etc.
+        Other = 5          // Any other file types
+    }
+
     public class Media
     {
         [Key]
@@ -17,8 +27,7 @@ namespace Business.Entities
         public int MessageID { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string MediaType { get; set; }
+        public MediaType MediaType { get; set; }
 
         [Required]
         public string URL { get; set; }

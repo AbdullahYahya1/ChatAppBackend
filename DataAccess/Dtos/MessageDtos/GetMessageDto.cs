@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess.Dtos.MediaDtos;
 
 namespace DataAccess.Dtos.MessageDtos
 {
@@ -16,5 +17,6 @@ namespace DataAccess.Dtos.MessageDtos
         public string MessageText { get; set; }
         public DateTime Timestamp { get; set; }
         public bool ReadStatus { get; set; }
+        public virtual ICollection<GetMediaDto> Media { get; set; }
     }
 }

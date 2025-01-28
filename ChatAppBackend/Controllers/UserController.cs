@@ -1,8 +1,10 @@
 ﻿using Business.Entities;
 using Business.IServices;
+using DataAccess.Dtos.General;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit.Cryptography;
 
 namespace ChatAppBackend.Controllers
 {
@@ -10,16 +12,16 @@ namespace ChatAppBackend.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IServicesDependency<User> _servicesDependency;
-        public UserController(IServicesDependency<User> servicesDependency) {
-            _servicesDependency = servicesDependency;
+        private readonly IUserService _userService;
+        public UserController(IUserService userService) {
+            _userService = userService;
         }
-        [HttpGet]
+        [HttpPost]
         [Authorize]
-        public async Task<IActionResult> GetCurrentUser()
+        public async Task<IActionResult> AddImageToProfile(imgDto imgDto)
         {
-            Console.WriteLine("GetUserId: " + _servicesDependency.GetUserId());
-            return Ok("here we are"); 
+            
+            return Ok(); 
         }
     }
 }

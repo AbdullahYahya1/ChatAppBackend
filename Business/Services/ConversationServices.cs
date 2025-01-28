@@ -62,10 +62,10 @@ namespace Business.Services
             await _dep.UnitOfWork.SaveChangesAsync();
             return new ResponseModel(){ IsSuccess = true };
         }
-        public async Task<ResponseModel<ICollection<ConversationDto>>> GetCurrentConversations(Pagination pagination)
+        public async Task<ResponseModel<ICollection<ConversationDto>>> GetCurrentConversations(Pagination pagination , string? email)
         {
             var currentUserId = _dep.GetUserId();
-            var conversations =await _dep.UnitOfWork.Conversations.GetAllConversationsByUserId(currentUserId, pagination);
+            var conversations =await _dep.UnitOfWork.Conversations.GetAllConversationsByUserId(currentUserId, pagination, email);
             return new ResponseModel<ICollection<ConversationDto>> { Result= conversations, IsSuccess=true };
         }
     }
