@@ -16,12 +16,12 @@ namespace ChatAppBackend.Controllers
         public UserController(IUserService userService) {
             _userService = userService;
         }
-        [HttpPost]
+        [HttpPost("ChangeProfilePage")]
         [Authorize]
         public async Task<IActionResult> AddImageToProfile(imgDto imgDto)
         {
-            
-            return Ok(); 
+           var res = await _userService.UpdateImage(imgDto);
+            return Ok(res); 
         }
     }
 }

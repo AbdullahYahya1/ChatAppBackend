@@ -45,7 +45,8 @@ namespace DataAccess.Repositories
                         .Where(cu => cu.UserID != userId)
                         .Select(cu => new GetUserDto
                         {
-                            Email = cu.User.Email
+                            Email = cu.User.Email,
+                            ProfileImg=cu.User.ProfileImg
                         })
                         .FirstOrDefault()
                 }).AsNoTracking()

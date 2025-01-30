@@ -34,7 +34,46 @@ namespace Business.Services
         }
 
         public async Task<ResponseModel<string>> UpdateImage(imgDto imgDto){
-            throw new NotImplementedException(); 
+
+
+            var imagesFolderPath = Path.Combine("wwwroot", "images");
+            if (!Directory.Exists(imagesFolderPath))
+            {
+                Directory.CreateDirectory(imagesFolderPath);
+            }
+            if (!string.IsNullOrWhiteSpace(imgDto.img64bit))
+            {
+                try
+                {
+                    var imageBytes = Convert.FromBase64String(imgDto.img64bit);
+                    var uniqueFileName = $"{Guid.NewGuid()}.jpg";
+                    var physicalPath = Path.Combine(imagesFolderPath, uniqueFileName);
+                    await File.WriteAllBytesAsync(physicalPath, imageBytes);
+                    var relativeImagePath = Path.Combine("images", uniqueFileName).Replace("\\", "/");
+                    var user = await _dep.UnitOfWork.Users.GetByIdAsync(_dep.GetUserId());
+                    user.ProfileImg = relativeImagePath;
+                    await _dep.UnitOfWork.SaveChangesAsync();
+                    return new ResponseModel<string>
+                    {
+                        Result = relativeImagePath,
+                        IsSuccess = true,
+                    };
+                }
+                catch (FormatException)
+                {
+                    return new ResponseModel<string>
+                    {
+                        IsSuccess = false,
+                        Message = "image contain invalid base64 data."
+                    };
+                }
+            }
+            return new ResponseModel<string>
+            {
+                IsSuccess = false,
+                Message = "somthing went wrong"
+            };
+
         }
 
         public async Task<ResponseModel<EmailCodeDto>> requestEmailCode(EmailDto emailDto)
@@ -211,17 +250,33 @@ namespace Business.Services
             Console.WriteLine();
             Console.WriteLine(user.Email + " "+user.RefreshToken +" " + tokenRequest.RefreshToken);
             Console.WriteLine();
-
-            if (user == null ||
-                user.RefreshToken != tokenRequest.RefreshToken ||
-                user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            if (user == null)
             {
                 return new ResponseModel<TokenResponse>
                 {
                     IsSuccess = false,
-                    Message = user.RefreshTokenExpiryTime <= DateTime.UtcNow? "Refresh token Expired" : "Refresh token is invalid" 
+                    Message = "User not found. Please log in again."
                 };
             }
+
+            if (user.RefreshToken != tokenRequest.RefreshToken)
+            {
+                return new ResponseModel<TokenResponse>
+                {
+                    IsSuccess = false,
+                    Message = "Invalid refresh token. Please request a new one."
+                };
+            }
+
+            if (user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            {
+                return new ResponseModel<TokenResponse>
+                {
+                    IsSuccess = false,
+                    Message = "Your session has expired. Please log in again to continue."
+                };
+            }
+
             var newAccessToken = _authService.GenerateJwtToken(user);
             var newRefreshToken = _authService.GenerateRefreshToken();
             user.RefreshToken = newRefreshToken;

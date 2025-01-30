@@ -25,6 +25,14 @@ namespace Business.Services
 
     public async Task<ResponseModel<GetMessageDto>> PostMessage(PostMessageDto postMessageDto)
         {
+            if ((postMessageDto.Files == null || postMessageDto.Files.Count() < 0) && string.IsNullOrEmpty(postMessageDto.MessageText))
+            {
+                return new ResponseModel<GetMessageDto>
+                {
+                    IsSuccess = false,
+                    Message = "NoContent"
+                };
+            }
             var currentUserId = _dep.GetUserId();
             var convCheck = await _dep.UnitOfWork.Conversations
                 .CheckUserAllowToSendToConversation(currentUserId, postMessageDto.ConversationID);
@@ -38,12 +46,16 @@ namespace Business.Services
             }
             var message = new Message
             {
-                MessageText = postMessageDto.MessageText,
                 ConversationID = postMessageDto.ConversationID,
                 SenderID = currentUserId,
                 ReadStatus = false,
                 Timestamp = DateTime.UtcNow,
             };
+            if (!string.IsNullOrEmpty(postMessageDto.MessageText))
+            {
+                message.MessageText = postMessageDto.MessageText;
+            }
+
             await _dep.UnitOfWork.Messages.AddAsync(message);
             await _dep.UnitOfWork.SaveChangesAsync();
             if (postMessageDto.Files != null && postMessageDto.Files.Count > 0)
@@ -90,9 +102,9 @@ namespace Business.Services
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => MediaType.Documents,
                 "video/mp4" => MediaType.Videos,
                 "audio/mpeg" => MediaType.Audio,
-                "webm" => MediaType.Audio,
+                "audio/webm" => MediaType.Audio,
                 "application/zip" => MediaType.Archives,
-                _ => MediaType.Other // Default to 'Other' if not recognized
+                _ => MediaType.Other 
             };
         }
 

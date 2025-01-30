@@ -19,7 +19,7 @@ namespace Business.Entities
         [Required]
         public int SenderID { get; set; }
 
-        public string MessageText { get; set; }
+        public string? MessageText { get; set; }
 
         public DateTime Timestamp { get; set; }
 
