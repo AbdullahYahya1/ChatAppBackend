@@ -1,4 +1,5 @@
 using Business.EmailSender;
+using Business.Hubs;
 using ChatAppBackend.Configuration;
 using Hangfire;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -14,14 +15,12 @@ builder.Services
     .AddAuthenticationAndAuthorization(builder.Configuration)
     .AddJson()
     .AddHealthChecks();
+builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
 //app.Lifetime.ApplicationStarted.Register(() =>
 //{
@@ -32,6 +31,8 @@ app.UseHttpsRedirection();
 //        recurringJobManager.AddOrUpdate("healthCheck-job", () => backgroundJobService.HealthCheck(), Cron.HourInterval(1));
 //    }
 //});
+
+app.MapHub<UserHub>("/userHub");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("AllowSpecificOrigin");

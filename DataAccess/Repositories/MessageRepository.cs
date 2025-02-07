@@ -19,7 +19,7 @@ namespace DataAccess.Repositories
         }
 
 
-        public async Task<ICollection<Message>> GetMessaegsByConversationID(int conversationID, int currentUserI, int? lastMessageId = null, int pageSize = 10)
+        public async Task<ICollection<Message>> GetMessaegsByConversationID(int conversationID, int currentUserI, int? lastMessageId = null, int pageSize = 20)
         {
             var query = _context.Messages.Include(M=>M.Media)
                 .Where(m => m.ConversationID == conversationID)

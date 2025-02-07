@@ -13,6 +13,8 @@ namespace DataAccess.IRepositories
     {
         Task<ICollection<ConversationDto>> GetAllConversationsByUserId(int userId, Pagination pagination, string? email);
         Task<bool> CheckUserAllowToSendToConversation(int userId,  int ConversationID);
+        Task<List<string>> GetAllEmails(int userId, int ConversationID);
+        Task ReadStatusConversation(int currentUserId,int conversationId);
 
     }
 }

@@ -3,6 +3,7 @@ using DataAccess.Dtos.General;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace DataAccess.Dtos.ConversationDtos
         public DateTime LastUpdate { get; set; }
         public ConversationType ConversationType { get; set; }
         public Message LastMessage { get; set; }
-        public string LastUpdateRelative { get; set; }
         public GetUserDto FirstUser { get; set; }
+        public int NumOfNewMessages { get; set; }
     }
 }

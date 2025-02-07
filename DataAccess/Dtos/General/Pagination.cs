@@ -9,6 +9,6 @@ namespace DataAccess.Dtos.General
     public class Pagination
     {
         public int page { get; set; } = 1;
-        public int pageSize { get; set; } = 10;
+        public int pageSize { get; set; } = 100;
     }
 }

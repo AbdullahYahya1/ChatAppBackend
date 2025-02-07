@@ -1,4 +1,5 @@
-﻿using Business.IServices;
+﻿using Business.Entities;
+using Business.IServices;
 using DataAccess.Dtos.General;
 using DataAccess.Dtos.UserDtos;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +31,11 @@ namespace ZChatAppBackend.Controllers
             var res = await _conversationServices.GetCurrentConversations(pagination, email);
             return Ok(res); 
         }
-        
-        
+        [HttpPost("UpdateReadStatus/{ConversationId}")]
+        public async Task<IActionResult> ReadMessages(int ConversationId)
+        {
+            var res= await _conversationServices.UpdateReadMessages(ConversationId);
+            return Ok(res);
+        }
     }
 }

@@ -101,11 +101,24 @@ namespace ChatAppBackend.Configuration
                     ValidAudience = configuration["Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
                 };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            context.HttpContext.Request.Path.StartsWithSegments("/userHub"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin",
-                    policyBuilder => policyBuilder.WithOrigins("http://localhost:4200")
+                    policyBuilder => policyBuilder.WithOrigins("http://localhost:4200/", "http://localhost:4200", "https://stately-gingersnap-88f488.netlify.app")
                                                   .AllowAnyHeader()
                                                   .AllowAnyMethod()
                                                   .AllowCredentials());

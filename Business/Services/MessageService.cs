@@ -1,8 +1,11 @@
-﻿using Business.Entities;
+﻿using Azure;
+using Business.Entities;
 using Business.FileService;
+using Business.Hubs;
 using Business.IServices;
 using DataAccess.Dtos.General;
 using DataAccess.Dtos.MessageDtos;
+using Microsoft.AspNetCore.SignalR;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -16,14 +19,16 @@ namespace Business.Services
     {
         private readonly IServicesDependency<Message> _dep;
         private readonly FileService.FileService _fileService;
+        private readonly IHubContext<UserHub> _hubContext;
 
-        public MessageService(IServicesDependency<Message> dep , FileService.FileService fileService)
+        public MessageService(IServicesDependency<Message> dep , FileService.FileService fileService, IHubContext<UserHub> hubContext)
         {
             _fileService = fileService;
             _dep = dep;
+            _hubContext = hubContext;
         }
 
-    public async Task<ResponseModel<GetMessageDto>> PostMessage(PostMessageDto postMessageDto)
+        public async Task<ResponseModel<GetMessageDto>> PostMessage(PostMessageDto postMessageDto)
         {
             if ((postMessageDto.Files == null || postMessageDto.Files.Count() < 0) && string.IsNullOrEmpty(postMessageDto.MessageText))
             {
@@ -64,13 +69,13 @@ namespace Business.Services
                 {
                     if (file?.Length > 0)
                     {
-                        var mediaType = GetMediaType(file.ContentType); 
+                        var mediaType = GetMediaType(file.ContentType);
 
                         var url = _fileService.SaveFile(file, mediaType);
                         var media = new Media
                         {
                             MessageID = message.MessageID,
-                            MediaType = mediaType, 
+                            MediaType = mediaType,
                             URL = url,
                             UploadedAt = DateTime.UtcNow
                         };
@@ -80,14 +85,25 @@ namespace Business.Services
             }
             var conversation = await _dep.UnitOfWork.Conversations
             .GetByIdAsync(postMessageDto.ConversationID);
-        conversation.LastMessage = message;
-        conversation.LastUpdate = DateTime.UtcNow;
-        await _dep.UnitOfWork.SaveChangesAsync();
-            return new ResponseModel<GetMessageDto>
+            conversation.LastMessage = message;
+            conversation.LastUpdate = DateTime.UtcNow;
+            await _dep.UnitOfWork.SaveChangesAsync();
+            var response = new ResponseModel<GetMessageDto>
             {
                 Result = _dep.Mapper.Map<GetMessageDto>(message),
                 IsSuccess = true
             };
+            var emails = await _dep.UnitOfWork.Conversations.GetAllEmails(currentUserId, conversation.ConversationID);
+            var res = new 
+            {
+                conversationId = conversation.ConversationID,
+                message = response.Result
+            };
+            foreach (string email in emails)
+            {
+                await _hubContext.Clients.User(email).SendAsync("ReceiveMessage", res);
+            }
+            return response;
     }
      private MediaType GetMediaType(string contentType)
         {

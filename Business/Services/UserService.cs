@@ -135,8 +135,8 @@ namespace Business.Services
                 </head>
                 <body>
                     <div class='email-container'>
-                        <h1>Hi, Your Verification Code</h1>
-                        <p>Thank you for using our service. Please use the verification code below to proceed:</p>
+                        <h1>Hi {emailDto.Email}, Your Verification Code</h1>
+                        <p>Thank you for using our website.</p>
                         <p class='code'>{code}</p>
                         <p>If you didn’t request this email, please ignore it.</p>
                         <p>Best regards, <br /> The Support Team</p>

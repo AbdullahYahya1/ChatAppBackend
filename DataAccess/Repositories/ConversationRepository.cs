@@ -3,6 +3,7 @@ using Business.Entities;
 using DataAccess.Dtos.ConversationDtos;
 using DataAccess.Dtos.General;
 using DataAccess.IRepositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;
@@ -39,8 +40,8 @@ namespace DataAccess.Repositories
                     ConversationID = c.ConversationID,
                     LastUpdate = c.LastUpdate,
                     LastMessage = c.LastMessage,
-                    LastUpdateRelative = c.LastUpdateRelative,
                     ConversationType = c.ConversationType,
+                    NumOfNewMessages = c.Messages.Count(m => m.ReadStatus == false && m.SenderID != userId),
                     FirstUser = c.ConversationUsers
                         .Where(cu => cu.UserID != userId)
                         .Select(cu => new GetUserDto
@@ -51,7 +52,6 @@ namespace DataAccess.Repositories
                         .FirstOrDefault()
                 }).AsNoTracking()
                 .ToListAsync();
-
             return conversations;
         }
 
@@ -61,6 +61,21 @@ namespace DataAccess.Repositories
                 .AnyAsync(c => c.ConversationID == ConversationID &&
                                c.ConversationUsers.Any(u => u.UserID == userId));
             return val;
+        }
+
+        public async Task<List<string>> GetAllEmails(int userId, int ConversationID)
+        {
+            var Emails = await _context.ConversationUsers.Where(c => c.UserID != userId && c.ConversationID == ConversationID).Select(c => c.User.Email).ToListAsync();
+            return Emails; 
+        }
+        public async Task ReadStatusConversation(int currentUserId, int conversationId)
+        {
+            var messages= await _context.Messages.Where(C => C.ConversationID == conversationId && C.ReadStatus ==false).ToListAsync();
+            foreach (var message in messages)
+            {
+                message.ReadStatus = true;
+            }
+            await _context.SaveChangesAsync(); 
         }
     }
 }
