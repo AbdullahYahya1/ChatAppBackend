@@ -21,7 +21,7 @@ namespace Business.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        public DateTime? RefreshTokenExpiryTime { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }   
         public string? RefreshToken { get; set; }
         public UserType UserType { get; set; }
         public DateTime? LastTimeConnected { get; set; }

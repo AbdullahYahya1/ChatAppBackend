@@ -118,7 +118,7 @@ namespace ChatAppBackend.Configuration
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin",
-                    policyBuilder => policyBuilder.WithOrigins("http://localhost:4200/", "http://localhost:4200", "https://stately-gingersnap-88f488.netlify.app")
+                    policyBuilder => policyBuilder.WithOrigins("http://localhost:4200/", "http://localhost:4200", "https://abdullahchatapp.site", "https://stately-gingersnap-88f488.netlify.app")
                                                   .AllowAnyHeader()
                                                   .AllowAnyMethod()
                                                   .AllowCredentials());

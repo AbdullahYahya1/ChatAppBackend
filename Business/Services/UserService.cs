@@ -97,53 +97,15 @@ namespace Business.Services
             }
             var code = new Random().Next(100000, 999999).ToString();
             verificationCodes[emailDto.Email] = (code, DateTime.UtcNow);
-            var subject = "Hi, Your Verification Code";
+            var subject = "Your Verification Code";
             var emailBody = $@"
-            <html>
-                <head>
-                    <style>
-                        body {{
-                            font-family: Arial, sans-serif;
-                            margin: 0;
-                            padding: 0;
-                            background-color: #f4f4f4;
-                            color: #333;
-                        }}
-                        .email-container {{
-                            max-width: 600px;
-                            margin: 20px auto;
-                            background-color: #fff;
-                            padding: 20px;
-                            border: 1px solid #ddd;
-                            border-radius: 5px;
-                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                        }}
-                        h1 {{
-                            color: #444;
-                            font-size: 24px;
-                        }}
-                        p {{
-                            font-size: 16px;
-                            line-height: 1.5;
-                        }}
-                        .code {{
-                            font-weight: bold;
-                            color: #e74c3c;
-                            font-size: 18px;
-                        }}
-                    </style>
-                </head>
-                <body>
-                    <div class='email-container'>
-                        <h1>Hi {emailDto.Email}, Your Verification Code</h1>
-                        <p>Thank you for using our website.</p>
-                        <p class='code'>{code}</p>
-                        <p>If you didn’t request this email, please ignore it.</p>
-                        <p>Best regards, <br /> The Support Team</p>
-                    </div>
-                </body>
-            </html>";
-            //await _emailSender.SendEmailAsync(emailDto.Email, subject, emailBody);
+                Hi,  
+
+                Here is your verification code: {code}  
+
+                Best,  
+                The Support Team";
+            await _emailSender.SendEmailAsync(emailDto.Email, subject, emailBody);
             return new ResponseModel<EmailCodeDto>
             {
                 Message = "Verification code sent to email.",
@@ -151,7 +113,7 @@ namespace Business.Services
                 Result = new EmailCodeDto
                 {
                     Email = emailDto.Email,
-                    EmailCode = code
+                    EmailCode ="000000"
                 }
             };
         }
